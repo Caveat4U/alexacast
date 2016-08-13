@@ -23,6 +23,11 @@
     {
       "intent": "Reboot",
       "slots": []
+    },
+
+    {
+      "intent": "SearchForDevice",
+      "slots": []
     }
   ]
 }

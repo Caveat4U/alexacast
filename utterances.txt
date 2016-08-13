@@ -1,6 +1,7 @@
 SkipMedia skip this song
 SkipMedia skip this
 SkipMedia play next song
+SkipMedia pass
 PlayMedia resume playing
 PlayMedia play
 PlayMedia unpause
@@ -11,3 +12,6 @@ Reconnect reconnect
 Reboot reboot
 Reboot restart
 Reboot explode
+SearchForDevice search for device
+SearchForDevice search
+SearchForDevice marco
