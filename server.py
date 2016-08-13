@@ -9,7 +9,7 @@ from pprint import pprint as p
 device_name = None
 cast = None
 app = alexandra.Application()
-wsgi_app = app.create_wsgi_app()
+#wsgi_app = app.create_wsgi_app()
 
 @click.command()
 @click.option('--device', help='name of chromecast device')
@@ -19,7 +19,9 @@ def server(device):
     global device_list
 
     # Initialize the connection 
-    app.run('0.0.0.0', 50421, debug=True)
+    a = app.run('127.0.0.1', 50421)
+    print dir(a)
+    print repr(a)
 
     # If the device was explicitly set
     if device:
@@ -33,11 +35,14 @@ def server(device):
 
         print(repr(cast))
     else:
+        print "else"
+        print dir(app)
+        sys.exit(0)
         # We're going to search for the device to connect to
         # TODO - trigger this as an intent
-        poll_for_devices()
+        search_for_device(slots, session)
         # TODO - add multithreading and stall.
-        exit()
+        
 
 
 @app.intent('Reconnect')
