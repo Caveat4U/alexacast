@@ -19,9 +19,7 @@ def server(device):
     global device_list
 
     # Initialize the connection 
-    a = app.run('127.0.0.1', 50421)
-    print dir(a)
-    print repr(a)
+    app.run('127.0.0.1', 50421)
 
     # If the device was explicitly set
     if device:
@@ -35,12 +33,10 @@ def server(device):
 
         print(repr(cast))
     else:
-        print "else"
-        print dir(app)
-        sys.exit(0)
+        app.dispatch_request('SearchForDevice')
         # We're going to search for the device to connect to
         # TODO - trigger this as an intent
-        search_for_device(slots, session)
+        #search_for_device(slots, session)
         # TODO - add multithreading and stall.
         
 
