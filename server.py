@@ -44,6 +44,8 @@ def server(device):
 @app.intent('Reconnect')
 def reconnect(slots, session):
     global cast
+    if not cast:
+        alexa.dispatch_request('SearchForDevice')
 
     cast = pychromecast.get_chromecast(friendly_name=device_name)
 
@@ -56,6 +58,8 @@ def reconnect(slots, session):
 
 @app.intent('SkipMedia')
 def skip_media(slots, session):
+    if not cast:
+        alexa.dispatch_request('SearchForDevice')
     mc = cast.media_controller
 
     if not mc.status.supports_skip_forward:
@@ -67,6 +71,8 @@ def skip_media(slots, session):
 
 @app.intent('PlayMedia')
 def play_media(slots, session):
+    if not cast:
+        alexa.dispatch_request('SearchForDevice')
     mc = cast.media_controller
 
     if mc.status.player_is_playing:
@@ -78,6 +84,8 @@ def play_media(slots, session):
 
 @app.intent('PauseMedia')
 def pause_media(slots, session):
+    if not cast:
+        alexa.dispatch_request('SearchForDevice')
     mc = cast.media_controller
 
     if not mc.status.player_is_playing:
@@ -89,6 +97,8 @@ def pause_media(slots, session):
 
 @app.intent('Reboot')
 def reboot(slots, session):
+    if not cast:
+        alexa.dispatch_request('SearchForDevice')
     cast.reboot()
     return alexandra.respond()
 
