@@ -112,6 +112,11 @@ def reboot(slots, session):
 def select_device(slots, session):
     global cast
     global device_list
+
+    # We want to do this poll up-front, but if we started with a single device passed in, then we have to do the search somewhere...
+    if not device_list:
+        # Alexa will time out during this request...there's got to be some way to do this in the background with threads...
+        device_list = [pychromecast.get_chromecast(friendly_name=device_name) for device_name in pychromecast.get_chromecasts_as_dict().keys()]
     # We're searching for a new cast device, so if our active device is set, unset it
     if cast:
         # ...dun dun dun
