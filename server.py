@@ -19,6 +19,9 @@ def server(device):
     global device_name
     global device_list
 
+    if not device:
+        # Get all the chromecast's on the network by their device objects.
+        device_list = [pychromecast.get_chromecast(friendly_name=device_name) for device_name in pychromecast.get_chromecasts_as_dict().keys()]
     # Initialize the connection 
     app.run('127.0.0.1', 50421)
 
@@ -34,8 +37,6 @@ def server(device):
 
         print(repr(cast))
     else:
-        # Get all the chromecast's on the network by their device objects.
-        device_list = [pychromecast.get_chromecast(friendly_name=device_name) for device_name in pychromecast.get_chromecasts_as_dict().keys()]
         app.dispatch_request('SelectDevice')
         # We're going to search for the device to connect to
         # TODO - trigger this as an intent
