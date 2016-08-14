@@ -9,6 +9,7 @@ from pprint import pprint as p
 device_name = None
 cast = None
 app = alexandra.Application()
+device_list = []
 #wsgi_app = app.create_wsgi_app()
 
 @click.command()
@@ -33,7 +34,9 @@ def server(device):
 
         print(repr(cast))
     else:
-        app.dispatch_request('SearchForDevice')
+        # Get all the chromecast's on the network by their device objects.
+        device_list = [pychromecast.get_chromecast(friendly_name=device_name) for device_name in pychromecast.get_chromecasts_as_dict().keys()]
+        app.dispatch_request('SelectDevice')
         # We're going to search for the device to connect to
         # TODO - trigger this as an intent
         #search_for_device(slots, session)
@@ -45,7 +48,7 @@ def server(device):
 def reconnect(slots, session):
     global cast
     if not cast:
-        alexa.dispatch_request('SearchForDevice')
+        alexa.dispatch_request('SelectDevice')
 
     cast = pychromecast.get_chromecast(friendly_name=device_name)
 
@@ -59,7 +62,7 @@ def reconnect(slots, session):
 @app.intent('SkipMedia')
 def skip_media(slots, session):
     if not cast:
-        alexa.dispatch_request('SearchForDevice')
+        alexa.dispatch_request('SelectDevice')
     mc = cast.media_controller
 
     if not mc.status.supports_skip_forward:
@@ -72,7 +75,7 @@ def skip_media(slots, session):
 @app.intent('PlayMedia')
 def play_media(slots, session):
     if not cast:
-        alexa.dispatch_request('SearchForDevice')
+        alexa.dispatch_request('SelectDevice')
     mc = cast.media_controller
 
     if mc.status.player_is_playing:
@@ -85,7 +88,7 @@ def play_media(slots, session):
 @app.intent('PauseMedia')
 def pause_media(slots, session):
     if not cast:
-        alexa.dispatch_request('SearchForDevice')
+        alexa.dispatch_request('SelectDevice')
     mc = cast.media_controller
 
     if not mc.status.player_is_playing:
@@ -98,23 +101,18 @@ def pause_media(slots, session):
 @app.intent('Reboot')
 def reboot(slots, session):
     if not cast:
-        alexa.dispatch_request('SearchForDevice')
+        alexa.dispatch_request('SelectDevice')
     cast.reboot()
     return alexandra.respond()
 
-@app.intent('SearchForDevice')
-def search_for_device(slots, session):
+@app.intent('SelectDevice')
+def select_device(slots, session):
     global cast
-    # We're searching for a new cast device, so if our active device is set
+    global device_list
+    # We're searching for a new cast device, so if our active device is set, unset it
     if cast:
-        # unset it...dun dun dun
+        # ...dun dun dun
         cast = None
-
-    # Tell the end user what's going on
-    alexandra.respond("I'm searching for chromecasts...")
-    
-    # Get all the chromecast's on the network by their device objects.
-    device_list = [pychromecast.get_chromecast(friendly_name=device_name) for device_name in pychromecast.get_chromecasts_as_dict().keys()]
 
     # If a player is playing, we want to list that player first as it is most probably the player we want to control.
     device_list.sort(key=lambda cast: int(cast.media_controller.status.player_is_playing), reverse=True)

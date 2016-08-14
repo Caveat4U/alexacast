@@ -26,7 +26,7 @@
     },
 
     {
-      "intent": "SearchForDevice",
+      "intent": "SelectDevice",
       "slots": []
     }
   ]

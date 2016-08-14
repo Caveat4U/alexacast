@@ -12,6 +12,9 @@ Reconnect reconnect
 Reboot reboot
 Reboot restart
 Reboot explode
-SearchForDevice search for device
-SearchForDevice search
-SearchForDevice marco
+SelectDevice search for devices
+SelectDevice search for device
+SelectDevice search
+SelectDevice select new device
+SelectDevice select device
+SelectDevice marco
