@@ -50,7 +50,7 @@ def reconnect(slots, session):
     global cast
     # If there's no cast device set at all
     if not cast:
-        alexandra.dispatch_request('SelectDevice')
+        app.dispatch_request('SelectDevice')
 
     # Renew the cast object with a fresh initialization
     cast = pychromecast.get_chromecast(friendly_name=device_name)
@@ -65,7 +65,7 @@ def reconnect(slots, session):
 @app.intent('SkipMedia')
 def skip_media(slots, session):
     if not cast:
-        alexandra.dispatch_request('SelectDevice')
+        app.dispatch_request('SelectDevice')
     mc = cast.media_controller
 
     if not mc.status.supports_skip_forward:
@@ -78,7 +78,7 @@ def skip_media(slots, session):
 @app.intent('PlayMedia')
 def play_media(slots, session):
     if not cast:
-        alexandra.dispatch_request('SelectDevice')
+        app.dispatch_request('SelectDevice')
     mc = cast.media_controller
 
     if mc.status.player_is_playing:
@@ -91,7 +91,7 @@ def play_media(slots, session):
 @app.intent('PauseMedia')
 def pause_media(slots, session):
     if not cast:
-        alexandra.dispatch_request('SelectDevice')
+        app.dispatch_request('SelectDevice')
     mc = cast.media_controller
 
     if not mc.status.player_is_playing:
@@ -104,7 +104,7 @@ def pause_media(slots, session):
 @app.intent('Reboot')
 def reboot(slots, session):
     if not cast:
-        alexandra.dispatch_request('SelectDevice')
+        app.dispatch_request('SelectDevice')
     cast.reboot()
     return alexandra.respond()
 
